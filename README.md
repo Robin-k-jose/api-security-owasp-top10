@@ -66,7 +66,7 @@ This allowed attackers to directly interact with authentication logic.
 - No rate limiting or account lockout
 - No authentication token (JWT or session)
 - No brute-force protection
-- Verbose error handling that could expose internal details
+- - Verbose error handling that could expose internal details
 
 ---
 
@@ -75,29 +75,28 @@ This allowed attackers to directly interact with authentication logic.
 An attacker can directly abuse the login endpoint using tools like `curl`, without any frontend interaction:
 
 ```bash
-curl -X POST http://localhost:3000/login \
- -H "Content-Type: application/json" \
- -d '{"username":"admin","password":"admin123"}'
-
+curl -X POST http://localhost:3000/login \ -H "Content-Type: application/json" \-d '{"username":"admin","password":"admin123"}'
+```
+ 
  ✅ Remediation – Secure Authentication (Fix for OWASP API2)
 
 After demonstrating Broken Authentication, the login implementation was secured using industry-standard practices.
 
 🔐 Security Improvements Implemented
 
-Passwords are hashed using bcrypt
+- Passwords are hashed using bcrypt
 
-Credentials are no longer hardcoded
+- Credentials are no longer hardcoded
 
-Input validation prevents malformed requests
+- Input validation prevents malformed requests
 
-Generic error messages prevent user enumeration
+- Generic error messages prevent user enumeration
 
-JWT (JSON Web Token) is issued after successful authentication
+- JWT (JSON Web Token) is issued after successful authentication
 
-Tokens have expiration (1h) to reduce replay risk
+- Tokens have expiration (1h) to reduce replay risk
 
-Internal errors no longer expose stack traces
+- Internal errors no longer expose stack traces
 
 🔑 Secure Login Flow
 
