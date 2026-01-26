@@ -112,6 +112,8 @@ The login implementation was secured using industry-standard controls.
 - JWT authentication
 
 - Token expiration (1 hour)
+
+
 🔑 Secure Login Flow
 
 1.Client sends username and password to /login
