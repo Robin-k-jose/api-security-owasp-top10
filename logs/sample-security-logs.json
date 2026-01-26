@@ -1,0 +1,41 @@
+[
+  {
+    "timestamp": "2026-01-25T10:15:20Z",
+    "event_type": "LOGIN_FAILED",
+    "username": "admin",
+    "reason": "Invalid password",
+    "source_ip": "127.0.0.1"
+  },
+  {
+    "timestamp": "2026-01-25T10:16:05Z",
+    "event_type": "LOGIN_FAILED",
+    "username": "admin",
+    "reason": "Invalid password",
+    "source_ip": "127.0.0.1"
+  },
+  {
+    "timestamp": "2026-01-25T10:16:40Z",
+    "event_type": "LOGIN_SUCCESS",
+    "username": "admin",
+    "role": "admin",
+    "source_ip": "127.0.0.1"
+  },
+  {
+    "timestamp": "2026-01-25T10:17:10Z",
+    "event_type": "JWT_ISSUED",
+    "username": "admin",
+    "expires_in": "1h"
+  },
+  {
+    "timestamp": "2026-01-25T10:17:45Z",
+    "event_type": "UNAUTHORIZED_ADMIN_ACCESS",
+    "username": "user1",
+    "source_ip": "127.0.0.1"
+  },
+  {
+    "timestamp": "2026-01-25T10:18:10Z",
+    "event_type": "ADMIN_ACCESS_GRANTED",
+    "username": "admin",
+    "source_ip": "127.0.0.1"
+  }
+]
