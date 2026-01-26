@@ -1,26 +1,29 @@
 # API Security Project – OWASP API Top 10
 
 ## 📌 Overview
-This project demonstrates real-world API security vulnerabilities and their remediation
-based on the OWASP API Security Top 10.
 
-The project focuses on how insecure APIs can be exploited and how proper security
-controls prevent those attacks. It walks through building a vulnerable API, simulating
-attacks, and then implementing secure authentication and authorization.
+This project demonstrates real-world API security vulnerabilities and their remediation based on the OWASP API Security Top 10.
+
+It walks through building a vulnerable API, simulating attacks, and then implementing secure authentication and authorization using industry-standard practices.
+
+The project focuses on both offensive (attack simulation) and defensive (remediation) perspectives.
 
 ---
 
 ## 🎯 Objectives
+
 - Build a vulnerable REST API
 - Identify and exploit OWASP API Top 10 issues
-- Implement authentication & authorization controls
+- Implement secure authentication and authorization
 - Demonstrate JWT-based session handling
 - Apply role-based access control (RBAC)
 - Document attack scenarios and remediation steps
+- Provide SIEM-style security logs
 
 ---
 
 ## 🛠 Technology Stack
+
 - Node.js (Express)
 - bcrypt (password hashing)
 - JWT Authentication (jsonwebtoken)
@@ -29,121 +32,175 @@ attacks, and then implementing secure authentication and authorization.
 
 ---
 
-## 📂 Project Structure (Current / Planned)
+## 📂 Project Structure
 
-vulnerable-api/
-attack-scenarios/
-remediation/
-logs/
-screenshots/
----
+api-security-owasp-top10/
+├── vulnerable-api/ # Express API implementation
+├── attack-scenarios/ # Exploitation examples
+├── remediation/ # Security fixes documentation
+├── logs/ # Sample SIEM security logs
+└── README.md
 
-## 🚧 Project Status
-Core authentication and authorization flows implemented.  
-Documentation and future hardening in progress.
 
 ---
 
-# 🔐 OWASP API2 – Broken Authentication
-
-**Affected Endpoint:** `POST /login`
-
-This project intentionally demonstrates **Broken Authentication** as defined by the OWASP API Security Top 10.
-
----
-
-## 🔎 Description
-The `/login` endpoint initially implemented an insecure authentication mechanism. The API validated
-credentials using hardcoded values and did not enforce standard authentication protections.
-This allowed attackers to directly interact with authentication logic.
-
----
-
-## ❌ Security Issues Identified (Initial Version)
-
-- Hardcoded credentials in source code
-- Plain-text password comparison
-- No rate limiting or account lockout
-- No authentication token (JWT or session)
-- No brute-force protection
-- - Verbose error handling that could expose internal details
-
----
-
-## 🧪 Attack Simulation
-
-An attacker can directly abuse the login endpoint using tools like `curl`, without any frontend interaction:
+## 🚀 How to Run Locally
 
 ```bash
-curl -X POST http://localhost:3000/login \ -H "Content-Type: application/json" \-d '{"username":"admin","password":"admin123"}'
+git clone https://github.com/Robin-k-jose/api-security-owasp-top10.git
+cd api-security-owasp-top10/vulnerable-api
+npm install
+node index.js
 ```
- 
- ✅ Remediation – Secure Authentication (Fix for OWASP API2)
 
-After demonstrating Broken Authentication, the login implementation was secured using industry-standard practices.
+Server starts at:
 
-🔐 Security Improvements Implemented
+http://localhost:3000
 
-- Passwords are hashed using bcrypt
+🚧 Project Status
 
-- Credentials are no longer hardcoded
+Core authentication and authorization flows implemented.
+Attack scenarios, remediation documentation, and SIEM sample logs completed.
 
-- Input validation prevents malformed requests
+🔐 OWASP API2 – Broken Authentication
+Affected Endpoint
 
-- Generic error messages prevent user enumeration
+POST /login
 
-- JWT (JSON Web Token) is issued after successful authentication
+🔎 Description
 
-- Tokens have expiration (1h) to reduce replay risk
+The /login endpoint initially implemented insecure authentication using hardcoded credentials and plain-text password comparison. No session or token-based security existed, allowing attackers to directly interact with authentication logic.
 
-- Internal errors no longer expose stack traces
+❌ Security Issues Identified (Initial Version)
 
-🔑 Secure Login Flow
+- Hardcoded credentials
 
-Client sends username and password to /login
+- Plain-text password comparison
 
-Server validates input
+- No rate limiting or account lockout
 
-Server looks up user record
+- No authentication tokens
 
-Password is verified using bcrypt
+- No brute-force protection
 
-JWT is generated with user identity and role
+- Verbose error handling
 
-Token is returned to client
+🧪 Attack Simulation
 
-Example:
-
+```bash
 curl -X POST http://localhost:3000/login \
  -H "Content-Type: application/json" \
  -d '{"username":"admin","password":"admin123"}'
+```
 
- Response:
+Attackers can automate this request to brute-force credentials.
 
- {
+✅ Remediation – Secure Authentication
+
+The login implementation was secured using industry-standard controls.
+
+🔐 Security Improvements
+
+- Password hashing using bcrypt
+
+- Removal of hardcoded credentials
+
+- Input validation
+
+- Generic error messages
+
+- JWT authentication
+
+- Token expiration (1 hour)
+🔑 Secure Login Flow
+
+1.Client sends username and password to /login
+
+2.Server validates input
+
+3.User record is retrieved
+
+4.Password verified using bcrypt
+
+5.JWT generated with user identity and role
+
+6.Token returned to client
+
+Example:
+```bash
+curl -X POST http://localhost:3000/login \
+ -H "Content-Type: application/json" \
+ -d '{"username":"admin","password":"admin123"}'
+```
+Response:
+
+{
   "message": "Login successful",
   "token": "<JWT_TOKEN>"
 }
 
-🔐 Role-Based Authorization (OWASP API5 – Broken Function Level Authorization)
+🔐 OWASP API5 – Broken Function Level Authorization
 
-After securing authentication, role-based authorization was implemented to restrict access to sensitive endpoints.
+After authentication was secured, role-based authorization was implemented.
 
 🛡 Implementation Details
 
-User role is embedded inside the JWT payload
+- User role embedded inside JWT
 
-Middleware validates JWT signature and expiration
+- Token validation middleware
 
-Authorization middleware enforces role checks
+- Authorization middleware enforcing role checks
 
-Admin-only endpoints require role: admin
+- Admin-only endpoints restricted to role: admin
 
-Protected endpoint example:
-
+- Protected endpoint:
+```bash
 curl http://localhost:3000/admin \
  -H "Authorization: Bearer <JWT_TOKEN>"
-
+ ```
  Only users with the admin role can access this endpoint.
 
-This mitigates OWASP API5 – Broken Function Level Authorization by ensuring users can only access APIs permitted by their role.
+📊 Security Logging
+
+Sample SIEM-style logs are provided in:
+
+logs/sample-security-logs.json
+
+These include:
+
+- Failed login attempts
+
+-  Successful authentication
+
+-  JWT issuance
+
+- Unauthorized admin access
+
+- Authorized admin access
+
+This demonstrates detection-oriented logging aligned with SOC workflows.
+📚 Key Learnings
+
+-  Authentication verifies identity
+
+- Authorization controls access
+
+- Passwords must always be hashed
+
+- JWT enables stateless sessions
+
+- Roles must be enforced server-side
+
+- APIs require both prevention and detection controls
+
+🚀 Future Improvements
+
+-  Environment variables for secrets
+
+- Rate limiting and account lockout
+
+- Refresh tokens
+
+- Database-backed users
+
+- Centralized logging integration
